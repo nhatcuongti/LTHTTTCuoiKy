@@ -5,6 +5,44 @@ const dbName = "delivery";
 
 
 export default{
+    async getSellerInforByCouchdb(id){
+        const mangoQuery = {
+            "selector": {
+                "_id": {
+                    "$eq": id // var id_seller
+                }
+            }
+        }
+        const parameters = {};
+        // const viewUrl = "_design/product/_view/product-view?include_docs=true";
+        const seller = await couch.mango(dbName, mangoQuery, parameters).then(async function (data, headers, status) {
+            return await data.data.docs[0]
+        }, function(err) {
+            console.log(err)
+        });
+        // console.log(seller)
+        return seller;
+
+    },
+    async getAllSellerInforByCouchdb(id) {
+        // const viewUrl = "_design/product/_view/product-view?include_docs=true";
+        const mangoQuery = {
+            "selector": {
+                "type": {
+                    "$eq": "store" // var id_seller
+                }
+            }
+        }
+        const parameters = {};
+
+        const seller = await couch.get(dbName, mangoQuery, parameters).then(async function (data, headers, status) {
+            return await data.data.docs
+        }, function (err) {
+            console.log(err)
+        });
+        // cons
+    },
+        //--------------------------------------------
     async getBranch(idCompany){
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
         query('SELECT * \n' +
